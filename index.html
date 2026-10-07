@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MY CHANEL VIP CARD｜我的 CHANEL 風格密碼</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Playfair+Display:wght@500;600&display=swap');
+
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; color:#111; background:#f4f1ec;
+  font-family:"Noto Sans TC",sans-serif;
+}
+.page{
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  padding:30px 16px;
+}
+.card{
+  width:min(900px,100%); background:#fff; box-shadow:0 20px 60px rgba(0,0,0,.12);
+  padding:42px; position:relative; overflow:hidden;
+}
+.card:before{
+  content:""; position:absolute; inset:12px; border:1px solid #d6d0c7; pointer-events:none;
+}
+.brand{
+  text-align:center; letter-spacing:.32em; font-size:14px; font-weight:500;
+}
+.logo{
+  font-family:"Playfair Display",serif; font-size:46px; letter-spacing:.08em;
+  margin:10px 0 4px;
+}
+.subtitle{
+  text-align:center; color:#777; font-size:12px; letter-spacing:.18em;
+}
+.content{position:relative; z-index:1; max-width:720px; margin:34px auto 0}
+h1{font-family:"Playfair Display",serif; font-size:38px; text-align:center; margin:0 0 12px}
+.lead{text-align:center; line-height:1.9; color:#555; margin:0 auto 28px}
+.start-btn,.next-btn,.restart-btn{
+  display:block; margin:22px auto 0; border:1px solid #111; background:#111; color:#fff;
+  padding:14px 34px; cursor:pointer; letter-spacing:.16em; font-size:13px;
+}
+.start-btn:hover,.next-btn:hover,.restart-btn:hover{background:#333}
+.hidden{display:none}
+.progress-wrap{margin-bottom:26px}
+.progress-text{font-size:12px; color:#777; letter-spacing:.12em; text-align:center}
+.progress{height:2px;background:#ddd;margin-top:9px}
+.progress span{display:block;height:100%;background:#111;width:20%;transition:.3s}
+.question{
+  font-family:"Playfair Display","Noto Sans TC",serif;
+  font-size:25px; line-height:1.6; text-align:center; margin-bottom:24px;
+}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.option{
+  border:1px solid #d8d4ce;background:#faf9f7;padding:20px;cursor:pointer;
+  transition:.2s; min-height:145px; text-align:left;
+}
+.option:hover{border-color:#111;transform:translateY(-2px)}
+.option.selected{border:2px solid #111;background:#fff}
+.option .tag{font-size:11px;letter-spacing:.12em;color:#777;margin-bottom:8px}
+.option strong{display:block;font-size:17px;margin-bottom:8px}
+.option p{font-size:13px;line-height:1.7;color:#555;margin:0}
+.result{text-align:center}
+.result-kicker{font-size:12px;letter-spacing:.2em;color:#777}
+.result h2{font-family:"Playfair Display",serif;font-size:48px;margin:10px 0 4px}
+.result .code{letter-spacing:.22em;font-size:13px;margin-bottom:25px}
+.quote{font-family:"Playfair Display",serif;font-size:22px;line-height:1.7;margin:25px auto;max-width:580px}
+.result-desc{line-height:2;color:#555;max-width:600px;margin:auto}
+.vip{
+  margin:30px auto 0; padding:26px; max-width:600px; border:1px solid #111;
+  background:#f8f6f2; text-align:left;
+}
+.vip-top{display:flex;justify-content:space-between;gap:15px;font-size:10px;letter-spacing:.16em}
+.vip h3{font-family:"Playfair Display",serif;font-size:30px;margin:22px 0 5px}
+.vip .vip-code{font-size:11px;letter-spacing:.18em;color:#666}
+.footer{font-size:11px;color:#888;text-align:center;margin-top:24px;letter-spacing:.08em}
+@media(max-width:650px){
+  .card{padding:28px 20px}.options{grid-template-columns:1fr}
+  h1{font-size:30px}.question{font-size:21px}.result h2{font-size:38px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <main class="card">
+    <div class="brand">CHANEL DIGITAL EXHIBITION</div>
+    <div class="logo">CHANEL</div>
+    <div class="subtitle">MY CHANEL STYLE CODE</div>
+
+    <section id="intro" class="content">
+      <h1>我的 CHANEL 風格密碼</h1>
+      <p class="lead">
+        準備離開 CHANEL 店鋪的妳，今天要前往一場特別的約會。
+        透過 5 道情境選擇，探索屬於妳的風格密碼，最後生成專屬的
+        <strong>MY CHANEL VIP CARD</strong>。
+      </p>
+      <button class="start-btn" onclick="startQuiz()">ENTER THE JOURNEY</button>
+    </section>
+
+    <section id="quiz" class="content hidden">
+      <div class="progress-wrap">
+        <div id="progressText" class="progress-text">QUESTION 1 / 5</div>
+        <div class="progress"><span id="progressBar"></span></div>
+      </div>
+      <div id="question" class="question"></div>
+      <div id="options" class="options"></div>
+      <button id="nextBtn" class="next-btn hidden" onclick="nextQuestion()">NEXT</button>
+    </section>
+
+    <section id="result" class="content result hidden">
+      <div class="result-kicker">YOUR CHANEL STYLE CODE</div>
+      <h2 id="resultName"></h2>
+      <div id="resultCode" class="code"></div>
+      <div id="resultQuote" class="quote"></div>
+      <p id="resultDesc" class="result-desc"></p>
+
+      <div class="vip">
+        <div class="vip-top">
+          <span>MY CHANEL VIP CARD</span>
+          <span>PRIVATE EDITION</span>
+        </div>
+        <h3 id="vipStyle"></h3>
+        <div id="vipCode" class="vip-code"></div>
+      </div>
+
+      <button class="restart-btn" onclick="restartQuiz()">RESTART JOURNEY</button>
+      <div class="footer">解密香奈兒：穿透時光的經典時尚工藝</div>
+    </section>
+  </main>
+</div>
+
+<script>
+const questions = [
+  {
+    q:"如果今天要參加一場重要約會，妳會選擇哪一種造型？",
+    opts:[
+      ["A","經典優雅","11.12 口蓋包 × 雙色鞋 × N°5 香水","CLASSIC"],
+      ["B","率性自在","11.12 口蓋包 × 雙色鞋，以最舒服的方式展現自己","FREE"],
+      ["C","神秘魅力","11.12 口蓋包 × N°5，讓香氣成為離開前的記憶","MYSTERIOUS"],
+      ["D","現代自我","雙色鞋 × N°5，以俐落造型展現鮮明個性","MODERN"]
+    ]
+  },
+  {
+    q:"如果只能選一件 CHANEL 單品陪妳度過今天，妳會選？",
+    opts:[
+      ["A","11.12 口蓋包","經典，是最不需要解釋的選擇","CLASSIC"],
+      ["B","雙色鞋","自在走自己的路，風格由自己決定","FREE"],
+      ["C","N°5 香水","不必現身，氣息也能留下記憶","MYSTERIOUS"],
+      ["D","最符合自己個性的單品","風格沒有標準答案，自己就是唯一答案","MODERN"]
+    ]
+  },
+  {
+    q:"走出 CHANEL 店鋪時，妳希望別人記住妳的什麼？",
+    opts:[
+      ["A","優雅氣質","從容、經典、耐看的魅力","CLASSIC"],
+      ["B","自信自在","舒服做自己，不被潮流牽著走","FREE"],
+      ["C","獨特魅力","保留神秘感，留下令人回味的餘韻","MYSTERIOUS"],
+      ["D","鮮明個性","俐落而有態度，清楚表達自己","MODERN"]
+    ]
+  },
+  {
+    q:"如果妳的生活是一場時尚電影，妳會選擇哪一種劇情？",
+    opts:[
+      ["A","永恆經典","多年後回看，依然優雅動人","CLASSIC"],
+      ["B","自由旅程","沒有固定腳本，跟著自己的步調前進","FREE"],
+      ["C","神秘篇章","不急著被看懂，留下讓人想探索的餘韻","MYSTERIOUS"],
+      ["D","當代宣言","打破既定規則，創造屬於自己的風格","MODERN"]
+    ]
+  },
+  {
+    q:"最後，選一句最像妳的 CHANEL Style Code。",
+    opts:[
+      ["A","「經典，永遠不會過時。」","TIMELESS","CLASSIC"],
+      ["B","「我不跟隨潮流，我選擇自己的方向。」","FREEDOM","FREE"],
+      ["C","「留下記憶，比留下痕跡更迷人。」","MYSTIQUE","MYSTERIOUS"],
+      ["D","「我的風格，由我定義。」","BE YOURSELF","MODERN"]
+    ]
+  }
+];
+
+const styles = {
+  CLASSIC:{
+    name:"經典優雅", code:"TIMELESS ELEGANCE",
+    quote:"「經典，是時間留下的答案。」",
+    desc:"妳相信真正的經典不需要追趕潮流。優雅、細節與從容，是妳最具辨識度的風格語言。",
+  },
+  FREE:{
+    name:"率性自在", code:"FREEDOM",
+    quote:"「我不跟隨潮流，我選擇自己的方向。」",
+    desc:"妳不被規則定義，也不盲目追逐潮流。對妳而言，自信來自做自己，風格來自自己的選擇。",
+  },
+  MYSTERIOUS:{
+    name:"神秘魅力", code:"MYSTIQUE",
+    quote:"「留下記憶，比留下痕跡更迷人。」",
+    desc:"妳懂得保留一點距離與想像。就像香氣一樣，不必刻意張揚，也能成為令人難忘的記憶。",
+  },
+  MODERN:{
+    name:"現代自我", code:"BE YOURSELF",
+    quote:"「我的風格，由我定義。」",
+    desc:"妳不受既定框架限制，勇於重新定義風格。簡潔、俐落而鮮明，正是妳表達自我的方式。",
+  }
+};
+
+let current=0, answers=[];
+
+function startQuiz(){
+  document.getElementById("intro").classList.add("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+  renderQuestion();
+}
+function renderQuestion(){
+  const q=questions[current];
+  document.getElementById("progressText").textContent=`QUESTION ${current+1} / ${questions.length}`;
+  document.getElementById("progressBar").style.width=((current+1)/questions.length*100)+"%";
+  document.getElementById("question").textContent=q.q;
+  const box=document.getElementById("options");
+  box.innerHTML="";
+  document.getElementById("nextBtn").classList.add("hidden");
+  q.opts.forEach((o,i)=>{
+    const el=document.createElement("div");
+    el.className="option";
+    el.innerHTML=`<div class="tag">${o[0]} / ${o[3]}</div><strong>${o[1]}</strong><p>${o[2]}</p>`;
+    el.onclick=()=>{
+      [...box.children].forEach(x=>x.classList.remove("selected"));
+      el.classList.add("selected");
+      answers[current]=o[3];
+      document.getElementById("nextBtn").classList.remove("hidden");
+      document.getElementById("nextBtn").textContent=current===questions.length-1?"REVEAL MY CODE":"NEXT";
+    };
+    box.appendChild(el);
+  });
+}
+function nextQuestion(){
+  if(!answers[current]) return;
+  if(current<questions.length-1){current++;renderQuestion();}
+  else showResult();
+}
+function showResult(){
+  const counts={CLASSIC:0,FREE:0,MYSTERIOUS:0,MODERN:0};
+  answers.forEach(a=>counts[a]++);
+  const max=Math.max(...Object.values(counts));
+  const winner=Object.keys(counts).find(k=>counts[k]===max);
+  const s=styles[winner];
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
+  document.getElementById("resultName").textContent=s.name;
+  document.getElementById("resultCode").textContent=s.code;
+  document.getElementById("resultQuote").textContent=s.quote;
+  document.getElementById("resultDesc").textContent=s.desc;
+  document.getElementById("vipStyle").textContent=s.name;
+  document.getElementById("vipCode").textContent="YOUR CODE  /  "+s.code;
+}
+function restartQuiz(){
+  current=0;answers=[];
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("intro").classList.remove("hidden");
+}
+</script>
